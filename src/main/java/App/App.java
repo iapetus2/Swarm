@@ -20,14 +20,14 @@ public class App extends Application {
 
     private Pane root;
 
-    private List<GameObject> bullets = new ArrayList<>();
-    private List<GameObject> soldiers = new ArrayList<>();
+    private List<Bullet> bullets = new ArrayList<>();
+    private List<Soldier> soldiers = new ArrayList<>();
 
-    private GameObject commander;
+    private Commander commander;
 
     private Parent createContent() {
         root = new Pane();
-        root.setPrefSize(1920, 1080);
+        root.setPrefSize(1400, 720);
 
         commander = new Commander();
         commander.setVelocity(new Point2D(1, 0));
@@ -44,12 +44,12 @@ public class App extends Application {
         return root;
     }
 
-    private void addBullet(GameObject bullet, double x, double y) {
+    private void addBullet(Bullet bullet, double x, double y) {
         bullets.add(bullet);
         addGameObject(bullet, x, y);
     }
 
-    private void addSoldier(GameObject soldier, double x, double y) {
+    private void addSoldier(Soldier soldier, double x, double y) {
         soldiers.add(soldier);
         addGameObject(soldier, x, y);
     }
@@ -61,13 +61,17 @@ public class App extends Application {
     }
 
     private void onUpdate() {
-        for (GameObject bullet : bullets) {
-            for (GameObject soldier : soldiers) {
+        for (Bullet bullet : bullets) {
+            for (Soldier soldier : soldiers) {
                 if (bullet.isColliding(soldier)) {
                     bullet.setAlive(false);
-                    soldier.setAlive(false);
+                    soldier.removeHealth(bullet.getDamage());
 
-                    root.getChildren().removeAll(bullet.getView(), soldier.getView());
+                    if (soldier.isDead()) {
+                        root.getChildren().removeAll(bullet.getView(), soldier.getView());
+                    } else {
+                        root.getChildren().removeAll(bullet.getView());
+                    }
                 }
             }
         }
@@ -92,8 +96,8 @@ public class App extends Application {
             } else if (e.getCode() == KeyCode.RIGHT) {
                 commander.rotateRight();
             } else if (e.getCode() == KeyCode.SPACE) {
-                Bullet bullet = new Bullet();
-                bullet.setVelocity(commander.getVelocity());
+                Bullet bullet = new Bullet(commander);
+                bullet.setVelocity(commander.getVelocity().normalize().multiply(5));
                 addBullet(bullet, commander.getView().getTranslateX(), commander.getView().getTranslateY());
             } else if (e.getCode() == KeyCode.ALT) {
                 addSoldier(new Soldier(), Math.random() * root.getPrefWidth(), Math.random() * root.getPrefHeight());

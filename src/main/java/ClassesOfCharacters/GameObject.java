@@ -8,6 +8,7 @@ public class GameObject {
 
     private Node view;
     private Point2D velocity = new Point2D(0, 0);
+    private int health = 0;
 
     private boolean alive = true;
 
@@ -18,6 +19,10 @@ public class GameObject {
     public void update() {
         view.setTranslateX(view.getTranslateX() + velocity.getX());
         view.setTranslateY(view.getTranslateY() + velocity.getY());
+    }
+
+    public void setHealth(int health) {
+        this.health = health;
     }
 
     public void setVelocity(Point2D velocity) {
@@ -60,5 +65,13 @@ public class GameObject {
 
     public boolean isColliding(GameObject other) {
         return getView().getBoundsInParent().intersects(other.getView().getBoundsInParent());
+    }
+
+    public void removeHealth (final int damage) {
+        if (health > damage) {
+            health -= damage;
+        } else {
+            this.setAlive(false);
+        }
     }
 }

@@ -5,12 +5,14 @@ import javafx.scene.shape.Circle;
 
 public class Soldier extends GameObject {
     public Commander cur_com;
+
     public Soldier() {
-        super(new Circle(15, 15, 15, Color.RED));
+        super(new Circle(10, 10, 10, Color.RED));
+        this.setHealth(20);
     }
 
-    public void follow(Commander com){
-            cur_com = com;
-        }
+    public void follow(Commander com) {
+        cur_com = com;
+    }
 
 }
