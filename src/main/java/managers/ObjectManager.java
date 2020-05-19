@@ -8,7 +8,7 @@ import java.util.List;
 public class ObjectManager {
         private List<GameObject> bullets = new ArrayList<>();
         private List<GameObject> soldiers = new ArrayList<>();
-        private List<GameObject> barracks = new ArrayList<>();
+        private List<GameObject> commanders = new ArrayList<>();
 
         private Pane root;
 
