@@ -8,6 +8,8 @@ import javafx.application.Application;
 import javafx.geometry.Point2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -43,6 +45,14 @@ public class App extends Application {
         scroll.setPrefSize(800, 600);
         scroll.setContent(layout);
         return scroll;
+    }
+
+    private void addBackground() {
+        ImageView imageView = new ImageView(new Image("https://s3.amazonaws.com/colorslive/png/248954-swJua0a0wWnCiVLL.png"));
+        imageView.setFitWidth(width);
+        imageView.setFitHeight(height);
+
+        root.getChildren().add(imageView);
     }
 
     @Override
@@ -88,7 +98,7 @@ public class App extends Application {
         menuApp = new MenuApp(this);
         startPane = menuApp.createContent();
         stage.setScene(new Scene(startPane));
-
+        stage.setTitle("Swarm 0.6");
         stage.show();
 
     }
@@ -129,7 +139,7 @@ public class App extends Application {
                     break;
             }
         });
-
+        addBackground();
         stage.show();
 
     }

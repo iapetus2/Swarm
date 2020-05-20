@@ -53,9 +53,12 @@ public class ObjectManager {
     private long counter = 0;
 
     public void onUpdate() {
+
         if (!App.pause) {
             counter++;
-
+            commanders.forEach(commander -> {
+                commander.getView().toFront();
+            });
             bullets.forEach(bullet -> {
                 soldiers.forEach(soldier -> {
                     if (soldier.getCaptain() != bullet.getStriker()) {
