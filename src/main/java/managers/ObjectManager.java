@@ -22,6 +22,7 @@ public class ObjectManager {
 
     public void setPane(Pane pane) {
         root = pane;
+        addKeyListener();
     }
 
     public void addMainCommander(Commander commander) {
@@ -93,7 +94,7 @@ public class ObjectManager {
     }
 
     private void addKeyListener() {
-        root.setOnKeyPressed(e -> {
+        root.getScene().setOnKeyPressed(e -> {
             if (e.getCode() == KeyCode.LEFT) {
                 mainCommander.rotateLeft();
             } else if (e.getCode() == KeyCode.RIGHT) {
@@ -107,7 +108,5 @@ public class ObjectManager {
             }
         });
     }
-
-
 
 }
