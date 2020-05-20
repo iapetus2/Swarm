@@ -4,6 +4,7 @@ import ClassesOfCharacters.Bullet;
 import ClassesOfCharacters.Commander;
 import ClassesOfCharacters.GameObject;
 import ClassesOfCharacters.Soldier;
+import app.App;
 import javafx.scene.Node;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
@@ -15,7 +16,6 @@ import java.util.List;
 public class ObjectManager {
 
     private Pane root;
-    private Commander mainCommander;
 
     private List<Bullet> bullets = new ArrayList<>();
     private List<Soldier> soldiers = new ArrayList<>();
@@ -25,12 +25,7 @@ public class ObjectManager {
         root = pane;
     }
 
-    public void addMainCommander(Commander commander, final double x, final double y) {
-        mainCommander = commander;
-        addCommander(mainCommander, x, y);
-    }
-
-    private void addCommander(Commander commander, double x, double y) {
+    public void addCommander(Commander commander, double x, double y) {
         commanders.add(commander);
         addGameObject(commander, x, y);
     }
@@ -92,6 +87,33 @@ public class ObjectManager {
         });
 
 
+        if(App.shoot) {
+            Bullet bullet = new Bullet(commanders.get(0));
+            bullet.setVelocity(commanders.get(0).getVelocity().normalize().multiply(5));
+            addBullet(bullet, commanders.get(0).getView().getTranslateX(), commanders.get(0).getView().getTranslateY());
+        }
+        if(App.clickLeft) {
+            commanders.get(0).rotateLeft();
+        }
+        if(App.clickRight) {
+            commanders.get(0).rotateRight();
+        }
+
+
+        if(App.shoot2) {
+            Bullet bullet = new Bullet(commanders.get(1));
+            bullet.setVelocity(commanders.get(1).getVelocity().normalize().multiply(5));
+            addBullet(bullet, commanders.get(1).getView().getTranslateX(), commanders.get(1).getView().getTranslateY());
+        }
+        if(App.clickLeft2) {
+            commanders.get(1).rotateLeft();
+        }
+        if(App.clickRight2) {
+            commanders.get(1).rotateRight();
+        }
+
+
+
         soldiers.removeIf(GameObject::isDead);
         bullets.removeIf(GameObject::isDead);
 
@@ -101,20 +123,5 @@ public class ObjectManager {
 
     }
 
-    private void addKeyListener() {
-        root.getScene().setOnKeyPressed(e -> {
-            if (e.getCode() == KeyCode.LEFT) {
-                mainCommander.rotateLeft();
-            } else if (e.getCode() == KeyCode.RIGHT) {
-                mainCommander.rotateRight();
-            } else if (e.getCode() == KeyCode.SPACE) {
-                Bullet bullet = new Bullet(mainCommander);
-                bullet.setVelocity(mainCommander.getVelocity().normalize().multiply(5));
-                addBullet(bullet, mainCommander.getView().getTranslateX(), mainCommander.getView().getTranslateY());
-            } else if (e.getCode() == KeyCode.ALT) {
-                addSoldier(new Soldier(), Math.random() * root.getPrefWidth(), Math.random() * root.getPrefHeight());
-            }
-        });
-    }
 
 }

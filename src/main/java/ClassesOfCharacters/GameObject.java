@@ -39,10 +39,6 @@ public class GameObject {
         return view;
     }
 
-    public void setView() {
-
-    }
-
     public boolean isAlive() {
         return alive;
     }
