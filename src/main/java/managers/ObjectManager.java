@@ -58,11 +58,31 @@ public class ObjectManager {
                             soldier.setAlive(true);
                             if (soldier.getCaptain() != null) {
                                 soldier.getCaptain().removeNumberOfSoldiers();
-                                //System.out.println(soldier.getCaptain().getNumberOfSoldiers());
+                                //
+                                //
+//                                System.out.print("Remove.  ");
+//                                if (soldier.getCaptain() == commanders.get(0)) {
+//                                    System.out.print("1:  ");
+//                                } else {
+//                                    System.out.print("2:  ");
+//                                }
+//                                System.out.println(soldier.getCaptain().getNumberOfSoldiers());
+                                //
+                                //
                             }
                             soldier.setCaptain(bullet.getStriker());
                             soldier.setFill(bullet.getStrikerPaint());
-                            //System.out.println(soldier.getCaptain().getNumberOfSoldiers());
+                            //
+                            //
+//                            System.out.print("Increase.  ");
+//                            if (soldier.getCaptain() == commanders.get(0)) {
+//                                System.out.print("1:  ");
+//                            } else {
+//                                System.out.print("2:  ");
+//                            }
+//                            System.out.println(soldier.getCaptain().getNumberOfSoldiers());
+                            //
+                            //
                         }
                         root.getChildren().removeAll(bullet.getView());
                     }

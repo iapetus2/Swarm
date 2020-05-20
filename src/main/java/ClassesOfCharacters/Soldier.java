@@ -15,6 +15,7 @@ public class Soldier extends GameObject {
     @Override
     public void setFill(Paint paint) {
         ((Circle) getView()).setFill(paint);
+        setHealth(20);
 
     }
 

@@ -56,13 +56,13 @@ public class GameObject {
     }
 
     public void rotateRight() {
-        view.setRotate(view.getRotate() + 10);
+        view.setRotate(view.getRotate() + 1);
         setVelocity(new Point2D(this.getVelocity().magnitude()*Math.cos(Math.toRadians(getRotate())),
                                 this.getVelocity().magnitude()*Math.sin(Math.toRadians(getRotate()))));
     }
 
     public void rotateLeft() {
-        view.setRotate(view.getRotate() - 10);
+        view.setRotate(view.getRotate() - 1);
         setVelocity(new Point2D(this.getVelocity().magnitude()*Math.cos(Math.toRadians(getRotate())),
                                 this.getVelocity().magnitude()*Math.sin(Math.toRadians(getRotate()))));
     }
