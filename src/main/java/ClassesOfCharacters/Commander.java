@@ -22,4 +22,8 @@ public class Commander extends GameObject {
         ((Rectangle) getView()).setFill(paint);
     }
 
+    public Paint getColor () {
+        return((Rectangle) getView()).getFill();
+    }
+
 }

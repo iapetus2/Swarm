@@ -60,8 +60,7 @@ public class ObjectManager {
                         bullet.setAlive(false);
                         soldier.removeHealth(bullet.getDamage());
                         if (soldier.isDead()) {
-                            //soldier.setAlive(true);
-                            soldier.setFill(Color.BLUE);
+                            soldier.setFill(bullet.getStrikerPaint());
                         }
                         root.getChildren().removeAll(bullet.getView());
                     }
