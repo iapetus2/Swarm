@@ -17,6 +17,7 @@ public class Commander extends GameObject {
         super.update();
     }
 
+    @Override
     public void setFill(Paint paint) {
         ((Rectangle) getView()).setFill(paint);
     }

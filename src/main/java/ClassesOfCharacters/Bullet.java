@@ -17,8 +17,8 @@ public class Bullet extends GameObject {
     }
 
     public void setDamage () {
-        if ((300 < striker.getView().getTranslateX() & striker.getView().getTranslateX() < 300) &
-        (striker.getView().getTranslateY() > 150 & striker.getView().getTranslateY() < 150)) {
+        if ((300 < striker.getView().getTranslateX() & striker.getView().getTranslateX() < 1100) &
+        (striker.getView().getTranslateY() > 150 & striker.getView().getTranslateY() < 570)) {
             damage = 10;
         } else {
             damage = 5;

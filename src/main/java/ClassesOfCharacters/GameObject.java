@@ -2,6 +2,8 @@ package ClassesOfCharacters;
 
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
+import javafx.scene.paint.Paint;
+import javafx.scene.shape.Rectangle;
 
 
 public class GameObject {
@@ -79,5 +81,9 @@ public class GameObject {
         } else {
             this.setAlive(false);
         }
+    }
+
+    public void setFill(Paint paint) {
+        ;
     }
 }

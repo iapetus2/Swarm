@@ -1,6 +1,7 @@
 package ClassesOfCharacters;
 
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
 
 public class Soldier extends GameObject {
@@ -15,6 +16,8 @@ public class Soldier extends GameObject {
         captain = commander;
     }
 
-
-
+    @Override
+    public void setFill(Paint paint) {
+        ((Circle) getView()).setFill(paint);
+    }
 }

@@ -7,6 +7,7 @@ import ClassesOfCharacters.Soldier;
 import javafx.scene.Node;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,17 +55,16 @@ public class ObjectManager {
 
         bullets.forEach(bullet -> {
             soldiers.forEach(soldier -> {
-                if (bullet.isColliding(soldier)) {
-                    bullet.setAlive(false);
-                    soldier.removeHealth(bullet.getDamage());
-                    if (soldier.isDead()) {
-                        root.getChildren().removeAll(bullet.getView(), soldier.getView());
-                    } else {
+                if (soldier.isAlive()) {
+                    if (bullet.isColliding(soldier)) {
+                        bullet.setAlive(false);
+                        soldier.removeHealth(bullet.getDamage());
+                        if (soldier.isDead()) {
+                            //soldier.setAlive(true);
+                            soldier.setFill(Color.BLUE);
+                        }
                         root.getChildren().removeAll(bullet.getView());
                     }
-
-
-
                 }
             });
         });
