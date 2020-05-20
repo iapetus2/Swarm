@@ -24,8 +24,10 @@ import java.util.concurrent.ThreadLocalRandom;
 public class ObjectManager {
 
     private Pane root;
+    private double width = 0;
+    private double heught = 0;
 
-    public static int numberOfEntities = 2;
+    public static int numberOfEntities = 3;
 
     private List<Bullet> bullets = new ArrayList<>();
     private List<Soldier> soldiers = new ArrayList<>();
@@ -45,13 +47,18 @@ public class ObjectManager {
     private Effect shadow = new DropShadow(5, Color.BLACK);
     private Effect blur = new BoxBlur(1, 1, 3);
 
+    public ObjectManager (double width, double height) {
+        this.width = width;
+        this.heught = height;
+    }
+
 
     public void setPane(Pane pane) {
         root = pane;
 
         textWin = new Text("");
-        textWin.setTranslateX(1980/4);
-        textWin.setTranslateY(1080/2);
+        textWin.setTranslateX(width/5);
+        textWin.setTranslateY(heught/2);
         textWin.setFont(Font.font("Verdana", FontWeight.EXTRA_BOLD, 100));
         textWin.setFill(Color.BLUE);
 
@@ -62,7 +69,7 @@ public class ObjectManager {
         text1.setFill(Color.BLUE);
 
         text2 = new Text(initalText2);
-        text2.setTranslateX(1480);
+        text2.setTranslateX(width - 240);
         text2.setTranslateY(50);
         text2.setFont(Font.font("Verdana", FontWeight.EXTRA_BOLD, 40));
         text2.setFill(Color.GREEN);
@@ -170,8 +177,10 @@ public class ObjectManager {
                 });
             });
 
-            text1.setText(initalText1 + commanders.get(0).getNumberOfSoldiers());
-            text2.setText(initalText2 + commanders.get(1).getNumberOfSoldiers());
+            if (!end) {
+                text1.setText(initalText1 + commanders.get(0).getNumberOfSoldiers());
+                text2.setText(initalText2 + commanders.get(1).getNumberOfSoldiers());
+            }
 
             commanders.forEach(commander -> {
                 Node viewCommander = commander.getView();
@@ -193,7 +202,9 @@ public class ObjectManager {
             if (App.shoot && counter > 20) {
                 Bullet bullet = new Bullet(commanders.get(0));
                 bullet.setVelocity(commanders.get(0).getVelocity().normalize().multiply(5));
-                addBullet(bullet, commanders.get(0).getView().getTranslateX(), commanders.get(0).getView().getTranslateY());
+                addBullet(bullet,
+                          commanders.get(0).getView().getTranslateX(),
+                          commanders.get(0).getView().getTranslateY());
             }
             if (App.clickLeft && !end) {
                 commanders.get(0).rotateLeft();
@@ -206,7 +217,9 @@ public class ObjectManager {
             if (App.shoot2 && counter > 20) {
                 Bullet bullet = new Bullet(commanders.get(1));
                 bullet.setVelocity(commanders.get(1).getVelocity().normalize().multiply(5));
-                addBullet(bullet, commanders.get(1).getView().getTranslateX(), commanders.get(1).getView().getTranslateY());
+                addBullet(bullet,
+                          commanders.get(1).getView().getTranslateX(),
+                          commanders.get(1).getView().getTranslateY());
             }
             if (App.clickLeft2 && !end) {
                 commanders.get(1).rotateLeft();
@@ -217,7 +230,8 @@ public class ObjectManager {
 
 
             if (numberOfEntities > 0 && ThreadLocalRandom.current().nextDouble() < 0.015) {
-                addSoldier(new Soldier(), ThreadLocalRandom.current().nextDouble() * root.getScene().getWidth(), ThreadLocalRandom.current().nextDouble() * root.getScene().getHeight());
+                addSoldier(new Soldier(), ThreadLocalRandom.current().nextDouble() * (root.getScene().getWidth() - 10),
+                                          ThreadLocalRandom.current().nextDouble() * (root.getScene().getHeight() - 10));
                 numberOfEntities--;
             }
 

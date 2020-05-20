@@ -23,15 +23,15 @@ import static javafx.scene.input.KeyCode.LEFT;
 
 public class App extends Application {
 
-    public final int width = 1920;
-    public final int height = 1080;
+    public final int width = 1400;
+    public final int height = 720;
 
     private Pane root;
     private Pane startPane;
     private Commander commander;
     private Commander commander2;
 
-    private ObjectManager objectManager = new ObjectManager();
+    private ObjectManager objectManager = new ObjectManager(width, height);
     private AnimationTimer mainTimer;
     private MenuApp menuApp;
     private Stage stage;
@@ -47,7 +47,7 @@ public class App extends Application {
         return scroll;
     }
 
-    private void addBackground() {
+    private void addBackground(double width, double height) {
         ImageView imageView = new ImageView(new Image("https://s3.amazonaws.com/colorslive/png/248954-swJua0a0wWnCiVLL.png"));
         imageView.setFitWidth(width);
         imageView.setFitHeight(height);
@@ -108,13 +108,12 @@ public class App extends Application {
         gameStatus = true;
 
         stage.setScene(new Scene(root));
-        stage.setMaximized(true);
 
         root.getScene().setOnKeyPressed(e -> {
             switch (e.getCode()) {
                 case LEFT: clickLeft = true; break;
                 case RIGHT: clickRight = true; break;
-                case CONTROL: shoot = true; break;
+                case SHIFT: shoot = true; break;
                 case P: pause = !pause; break;
 
                 case A: clickLeft2 = true; break;
@@ -127,18 +126,15 @@ public class App extends Application {
             switch (e.getCode()) {
                 case LEFT: clickLeft = false; break;
                 case RIGHT: clickRight = false; break;
-                case CONTROL: shoot = false; break;
+                case SHIFT: shoot = false; break;
 
                 case A: clickLeft2 = false; break;
                 case D: clickRight2 = false; break;
                 case SPACE: shoot2 = false; break;
-
-                case ALT:
-                    objectManager.addSoldier(new Soldier(), Math.random() * root.getPrefWidth(), Math.random() * root.getPrefHeight());
-                    break;
             }
         });
-        addBackground();
+        stage.setMaximized(true);
+        addBackground(root.getScene().getWidth(), root.getScene().getHeight());
         stage.show();
 
     }
