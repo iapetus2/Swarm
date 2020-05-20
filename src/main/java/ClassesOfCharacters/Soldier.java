@@ -15,4 +15,6 @@ public class Soldier extends GameObject {
         captain = commander;
     }
 
+
+
 }

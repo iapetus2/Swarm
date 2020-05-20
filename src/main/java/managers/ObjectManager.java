@@ -22,7 +22,6 @@ public class ObjectManager {
 
     public void setPane(Pane pane) {
         root = pane;
-        addKeyListener();
     }
 
     public void addMainCommander(Commander commander) {
@@ -52,8 +51,9 @@ public class ObjectManager {
     }
 
     public void onUpdate() {
+
         bullets.forEach(bullet -> {
-            soldiers.stream().parallel().forEach(soldier -> {
+            soldiers.forEach(soldier -> {
                 if (bullet.isColliding(soldier)) {
                     bullet.setAlive(false);
                     soldier.setAlive(false);
@@ -80,16 +80,12 @@ public class ObjectManager {
         });
 
 
-        if (Math.random() < 0.02) {
-            addSoldier(new Soldier(), Math.random() * root.getPrefWidth(), Math.random() * root.getPrefHeight());
-        }
-
         soldiers.removeIf(GameObject::isDead);
         bullets.removeIf(GameObject::isDead);
 
-        bullets.stream().parallel().forEach(GameObject::update);
-        soldiers.stream().parallel().forEach(GameObject::update);
-        commanders.stream().parallel().forEach(GameObject::update);
+        bullets.forEach(GameObject::update);
+        soldiers.forEach(GameObject::update);
+        commanders.forEach(GameObject::update);
 
     }
 

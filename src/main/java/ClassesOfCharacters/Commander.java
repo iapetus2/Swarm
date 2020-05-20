@@ -1,6 +1,9 @@
 package ClassesOfCharacters;
 
+import javafx.scene.Parent;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
+import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 
 public class Commander extends GameObject {
@@ -12,7 +15,10 @@ public class Commander extends GameObject {
     @Override
     public void update () {
         super.update();
+    }
 
+    public void setFill(Paint paint) {
+        ((Rectangle) getView()).setFill(paint);
     }
 
 }
