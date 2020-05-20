@@ -14,6 +14,8 @@ import javafx.scene.control.ScrollPane;
 
 import managers.ObjectManager;
 
+import static javafx.scene.input.KeyCode.LEFT;
+
 public class App extends Application {
 
     private final int width = 1920;
@@ -44,13 +46,13 @@ public class App extends Application {
         root.setPrefSize(width, height);
 
         commander = new Commander();
-        commander.setVelocity(new Point2D(1, 0));
+        commander.setVelocity(new Point2D(0.5, 0));
         commander2 = new Commander();
-        commander2.setVelocity(new Point2D(1, 0));
+        commander2.setVelocity(new Point2D(0.5, 0));
 
         objectManager.setPane(root);
-        objectManager.addMainCommander(commander);
-        objectManager.addMainCommander(commander2);
+        objectManager.addCommander(commander, 300, 300);
+        objectManager.addCommander(commander2, 300, 300);
 
         mainTimer = new AnimationTimer() {
             @Override
@@ -61,26 +63,62 @@ public class App extends Application {
         mainTimer.start();
     }
 
+    public static boolean clickLeft = false;
+    public static boolean clickRight = false;
+    public static boolean shoot = false;
+
+    public static boolean clickLeft2 = false;
+    public static boolean clickRight2 = false;
+    public static boolean shoot2 = false;
+
+
     @Override
     public void start(Stage stage) throws Exception {
         stage.setScene(new Scene(root));
-        stage.getScene().setOnKeyPressed(e -> {
-            if (e.getCode() == KeyCode.LEFT) {
-                commander.rotateLeft();
-            } else if (e.getCode() == KeyCode.RIGHT) {
-                commander.rotateRight();
-            } else if (e.getCode() == KeyCode.SPACE) {
-                Bullet bullet = new Bullet(commander);
-                bullet.setVelocity(commander.getVelocity().normalize().multiply(5));
-                objectManager.addBullet(bullet, commander.getView().getTranslateX(),
-                                                commander.getView().getTranslateY());
-            } else if (e.getCode() == KeyCode.ALT) {
-                objectManager.addSoldier(new Soldier(), Math.random() * root.getPrefWidth(),
-                                                        Math.random() * root.getPrefHeight());
-            }
 
+        root.getScene().setOnKeyPressed(e -> {
+            switch (e.getCode()) {
+                case LEFT: clickLeft = true; break;
+                case RIGHT: clickRight = true; break;
+                case CONTROL: shoot = true; break;
+
+                case A: clickLeft2 = true; break;
+                case D: clickRight2 = true; break;
+                case SPACE: shoot2 = true; break;
+            }
         });
-        stage.getScene().setOnKeyReleased(e -> {
+
+        root.getScene().setOnKeyReleased(e -> {
+            switch (e.getCode()) {
+                case LEFT: clickLeft = false; break;
+                case RIGHT: clickRight = false; break;
+                case CONTROL: shoot = false; break;
+
+                case A: clickLeft2 = false; break;
+                case D: clickRight2 = false; break;
+                case SPACE: shoot2 = false; break;
+
+                case ALT:
+                    objectManager.addSoldier(new Soldier(), Math.random() * root.getPrefWidth(), Math.random() * root.getPrefHeight());
+                    break;
+            }
+        });
+
+        /*if (e.getCode() == LEFT) {
+            commander.rotateLeft();
+        } else if (e.getCode() == KeyCode.RIGHT) {
+            commander.rotateRight();
+        } else if (e.getCode() == KeyCode.SPACE) {
+            Bullet bullet = new Bullet(commander);
+            bullet.setVelocity(commander.getVelocity().normalize().multiply(5));
+            objectManager.addBullet(bullet, commander.getView().getTranslateX(),
+                    commander.getView().getTranslateY());
+        } else if (e.getCode() == KeyCode.ALT) {
+            objectManager.addSoldier(new Soldier(), Math.random() * root.getPrefWidth(),
+                    Math.random() * root.getPrefHeight());
+        }*/
+
+       /* stage.getScene().setOnKeyReleased(e -> {
             if (e.getCode() == KeyCode.A) {
                 commander2.rotateLeft();
             } else if (e.getCode() == KeyCode.D) {
@@ -94,7 +132,7 @@ public class App extends Application {
                 objectManager.addSoldier(new Soldier(), Math.random() * root.getPrefWidth(),
                         Math.random() * root.getPrefHeight());
             }
-                });
+                });*/
         stage.show();
 
     }
