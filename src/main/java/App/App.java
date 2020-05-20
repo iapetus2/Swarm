@@ -29,7 +29,7 @@ public class App extends Application {
         root = new Pane();
         root.setPrefSize(1400, 720);
 
-        commander = new Commander();
+        commander = new Commander(root.getPrefWidth(), root.getPrefHeight());
         commander.setVelocity(new Point2D(1, 0));
         addGameObject(commander, 300, 300);
 
@@ -82,7 +82,7 @@ public class App extends Application {
         bullets.forEach(GameObject::update);
         soldiers.forEach(GameObject::update);
 
-        commander.update();
+        commander.update(root.getWidth(), root.getHeight());
 
 
     }

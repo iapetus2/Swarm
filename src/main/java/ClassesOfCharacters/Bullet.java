@@ -5,17 +5,17 @@ import javafx.scene.shape.Circle;
 
 public class Bullet extends GameObject {
     private int damage = 1;
-    private Commander myCommander;
+    private Commander striker;
 
     public Bullet(final Commander cur_com) {
         super(new Circle(3, 3, 3, Color.BROWN));
-        myCommander = cur_com;
+        striker = cur_com;
         setDamage();
     }
 
     public void setDamage () {
-        if ((400 < myCommander.getView().getTranslateX() & myCommander.getView().getTranslateX() < 1000) &
-        (myCommander.getView().getTranslateY() > 170 & myCommander.getView().getTranslateY() < 550)) {
+        if ((300 < striker.getView().getTranslateX() & striker.getView().getTranslateX() < striker.width - 300) &
+        (striker.getView().getTranslateY() > 150 & striker.getView().getTranslateY() < striker.height - 150)) {
             damage = 10;
         } else {
             damage = 5;
