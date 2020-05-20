@@ -5,19 +5,25 @@ import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
 
 public class Soldier extends GameObject {
-    public Commander captain;
+    private Commander captain = null;
 
     public Soldier() {
         super(new Circle(10, 10, 10, Color.RED));
         this.setHealth(20);
     }
 
-    public void follow(Commander commander) {
-        captain = commander;
-    }
-
     @Override
     public void setFill(Paint paint) {
         ((Circle) getView()).setFill(paint);
+
+    }
+
+    public Commander getCaptain () {
+        return captain;
+    }
+
+    public void setCaptain (final Commander commander) {
+        captain = commander;
+        commander.increaseNumberOfSoldiers();
     }
 }

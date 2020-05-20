@@ -55,12 +55,19 @@ public class ObjectManager {
 
         bullets.forEach(bullet -> {
             soldiers.forEach(soldier -> {
-                if (soldier.isAlive()) {
+                if (soldier.getCaptain() != bullet.getStriker()) {
                     if (bullet.isColliding(soldier)) {
                         bullet.setAlive(false);
                         soldier.removeHealth(bullet.getDamage());
                         if (soldier.isDead()) {
+                            soldier.setAlive(true);
+                            if (soldier.getCaptain() != null) {
+                                soldier.getCaptain().removeNumberOfSoldiers();
+                                //System.out.println(soldier.getCaptain().getNumberOfSoldiers());
+                            }
+                            soldier.setCaptain(bullet.getStriker());
                             soldier.setFill(bullet.getStrikerPaint());
+                            //System.out.println(soldier.getCaptain().getNumberOfSoldiers());
                         }
                         root.getChildren().removeAll(bullet.getView());
                     }

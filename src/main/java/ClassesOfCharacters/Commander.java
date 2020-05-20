@@ -7,9 +7,14 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 
 public class Commander extends GameObject {
+    private int numberOfSoldiers = 0;
 
     public Commander() {
         super(new Rectangle(30, 15, Color.BLUE));
+    }
+
+    public int getNumberOfSoldiers () {
+        return numberOfSoldiers;
     }
 
     @Override
@@ -24,6 +29,14 @@ public class Commander extends GameObject {
 
     public Paint getColor () {
         return((Rectangle) getView()).getFill();
+    }
+
+    public void increaseNumberOfSoldiers () {
+        numberOfSoldiers += 1;
+    }
+
+    public void removeNumberOfSoldiers () {
+        numberOfSoldiers -= 1;
     }
 
 }

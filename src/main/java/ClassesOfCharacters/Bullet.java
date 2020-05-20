@@ -35,4 +35,8 @@ public class Bullet extends GameObject {
     public int getDamage () {
         return damage;
     }
+
+    public Commander getStriker () {
+        return striker;
+    }
 }
