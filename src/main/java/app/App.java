@@ -16,8 +16,8 @@ import managers.ObjectManager;
 
 public class App extends Application {
 
-    private final int width = 1400;
-    private final int height = 720;
+    private final int width = 1000;
+    private final int height = 500;
 
     private Pane root;
     private Commander commander;

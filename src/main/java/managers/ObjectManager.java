@@ -16,9 +16,9 @@ public class ObjectManager {
     private Pane root;
     private Commander mainCommander;
 
-    private List<GameObject> bullets = new ArrayList<>();
-    private List<GameObject> soldiers = new ArrayList<>();
-    private List<GameObject> commanders = new ArrayList<>();
+    private List<Bullet> bullets = new ArrayList<>();
+    private List<Soldier> soldiers = new ArrayList<>();
+    private List<Commander> commanders = new ArrayList<>();
 
     public void setPane(Pane pane) {
         root = pane;
@@ -34,12 +34,12 @@ public class ObjectManager {
         addGameObject(commander, x, y);
     }
 
-    public void addBullet(GameObject bullet, double x, double y) {
+    public void addBullet(Bullet bullet, double x, double y) {
         bullets.add(bullet);
         addGameObject(bullet, x, y);
     }
 
-    public void addSoldier(GameObject soldier, double x, double y) {
+    public void addSoldier(Soldier soldier, double x, double y) {
         soldiers.add(soldier);
         addGameObject(soldier, x, y);
     }
@@ -56,9 +56,15 @@ public class ObjectManager {
             soldiers.forEach(soldier -> {
                 if (bullet.isColliding(soldier)) {
                     bullet.setAlive(false);
-                    soldier.setAlive(false);
+                    soldier.removeHealth(bullet.getDamage());
+                    if (soldier.isDead()) {
+                        root.getChildren().removeAll(bullet.getView(), soldier.getView());
+                    } else {
+                        root.getChildren().removeAll(bullet.getView());
+                    }
 
-                    root.getChildren().removeAll(bullet.getView(), soldier.getView());
+
+
                 }
             });
         });

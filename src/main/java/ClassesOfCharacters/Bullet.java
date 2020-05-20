@@ -13,13 +13,12 @@ public class Bullet extends GameObject {
     public Bullet(final Commander commander) {
         super(new Circle(3, 3, 3, Color.BROWN));
         striker = commander;
-        //setDamage();
+        setDamage();
     }
 
     public void setDamage () {
-
-        if ((300 < striker.getView().getTranslateX() & striker.getView().getTranslateX() <  - 300) &
-        (striker.getView().getTranslateY() > 150 & striker.getView().getTranslateY() <  - 150)) {
+        if ((300 < striker.getView().getTranslateX() & striker.getView().getTranslateX() < 300) &
+        (striker.getView().getTranslateY() > 150 & striker.getView().getTranslateY() < 150)) {
             damage = 10;
         } else {
             damage = 5;
