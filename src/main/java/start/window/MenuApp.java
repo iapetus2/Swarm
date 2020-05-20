@@ -24,7 +24,7 @@ import java.util.List;
 
 public class MenuApp {
 
-    private static final int WIDTH = 600;
+    private static final int WIDTH = 1080;
     private static final int HEIGHT = 720;
 
     private Pane gamePane;
@@ -80,7 +80,7 @@ public class MenuApp {
     }
 
     private void addBackground() {
-        Image img = new Image("http://www.narniaweb.com/wp-content/uploads/2009/08/NarniaMap.jpg");
+        Image img = new Image("https://www.ringtv.com/wp-content/uploads/2018/02/GettyImages-157456428.jpg");
         ImageView imageView = new ImageView(img);
         imageView.setFitWidth(WIDTH);
         imageView.setFitHeight(HEIGHT);
