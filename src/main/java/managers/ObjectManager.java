@@ -40,6 +40,7 @@ public class ObjectManager {
     private String blueWin = "Blue doooodle win! ";
     private String greenWin = "Green doooodle win! ";
 
+    public static boolean end = false;
 
     private Effect shadow = new DropShadow(5, Color.BLACK);
     private Effect blur = new BoxBlur(1, 1, 3);
@@ -105,13 +106,45 @@ public class ObjectManager {
 
 
             if(currentNumberOfSoldiers <= 0 ) {
-                if(commanders.get(0).getNumberOfSoldiers() > commanders.get(1).getNumberOfSoldiers()) {
+                if(commanders.get(0).getNumberOfSoldiers() > commanders.get(1).getNumberOfSoldiers() && !end) {
                     textWin.setText(blueWin);
-                } else {
+                    textWin.setFill(Color.BLUE);
+                    end = true;
+                } else if (!end){
                     textWin.setText(greenWin);
+                    textWin.setFill(Color.GREEN);
+                    end = true;
                 }
                 textWin.toFront();
-                App.pause = true;
+                counter = 40;
+                commanders.get(0).rotateLeft();
+                commanders.get(1).rotateLeft();
+
+                Bullet bullet1 = new Bullet(commanders.get(0));
+                bullet1.setVelocity(commanders.get(0).getVelocity().normalize().multiply(-5));
+                addBullet(bullet1, commanders.get(0).getView().getTranslateX(), commanders.get(0).getView().getTranslateY());
+
+                Bullet bullet2 = new Bullet(commanders.get(1));
+                bullet2.setVelocity(commanders.get(1).getVelocity().normalize().multiply(-5));
+                addBullet(bullet2, commanders.get(1).getView().getTranslateX(), commanders.get(1).getView().getTranslateY());
+
+                bullets.forEach(bullet -> {
+                    Node viewBullet = bullet.getView();
+
+                    if (viewBullet.getTranslateX() < 0) {
+                        viewBullet.setTranslateX(root.getWidth());
+                    } else if (viewBullet.getTranslateX() > root.getWidth()) {
+                        viewBullet.setTranslateX(0);
+                    }
+
+                    if (viewBullet.getTranslateY() < 0) {
+                        viewBullet.setTranslateY(root.getHeight());
+                    } else if (viewBullet.getTranslateY() > root.getHeight()) {
+                        viewBullet.setTranslateY(0);
+                    }
+                });
+
+                App.shoot = App.shoot2 = true;
             }
 
 
@@ -162,10 +195,10 @@ public class ObjectManager {
                 bullet.setVelocity(commanders.get(0).getVelocity().normalize().multiply(5));
                 addBullet(bullet, commanders.get(0).getView().getTranslateX(), commanders.get(0).getView().getTranslateY());
             }
-            if (App.clickLeft) {
+            if (App.clickLeft && !end) {
                 commanders.get(0).rotateLeft();
             }
-            if (App.clickRight) {
+            if (App.clickRight && !end) {
                 commanders.get(0).rotateRight();
             }
 
@@ -175,16 +208,16 @@ public class ObjectManager {
                 bullet.setVelocity(commanders.get(1).getVelocity().normalize().multiply(5));
                 addBullet(bullet, commanders.get(1).getView().getTranslateX(), commanders.get(1).getView().getTranslateY());
             }
-            if (App.clickLeft2) {
+            if (App.clickLeft2 && !end) {
                 commanders.get(1).rotateLeft();
             }
-            if (App.clickRight2) {
+            if (App.clickRight2 && !end) {
                 commanders.get(1).rotateRight();
             }
 
 
             if (numberOfEntities > 0 && ThreadLocalRandom.current().nextDouble() < 0.015) {
-                addSoldier(new Soldier(), ThreadLocalRandom.current().nextDouble() * root.getPrefWidth(), ThreadLocalRandom.current().nextDouble() * root.getPrefHeight());
+                addSoldier(new Soldier(), ThreadLocalRandom.current().nextDouble() * root.getScene().getWidth(), ThreadLocalRandom.current().nextDouble() * root.getScene().getHeight());
                 numberOfEntities--;
             }
 
