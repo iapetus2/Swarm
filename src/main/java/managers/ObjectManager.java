@@ -25,9 +25,9 @@ public class ObjectManager {
         root = pane;
     }
 
-    public void addMainCommander(Commander commander) {
+    public void addMainCommander(Commander commander, final double x, final double y) {
         mainCommander = commander;
-        addCommander(mainCommander, 300, 300);
+        addCommander(mainCommander, x, y);
     }
 
     private void addCommander(Commander commander, double x, double y) {

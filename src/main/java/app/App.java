@@ -9,6 +9,7 @@ import javafx.geometry.Point2D;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.scene.control.ScrollPane;
 
@@ -16,8 +17,8 @@ import managers.ObjectManager;
 
 public class App extends Application {
 
-    private final int width = 1920;
-    private final int height = 1080;
+    private final int width = 1400;
+    private final int height = 720;
 
     private Pane root;
     private Commander commander;
@@ -43,14 +44,14 @@ public class App extends Application {
         root = new Pane();
         root.setPrefSize(width, height);
 
-        commander = new Commander();
-        commander.setVelocity(new Point2D(1, 0));
-        commander2 = new Commander();
-        commander2.setVelocity(new Point2D(1, 0));
+        commander = new Commander(Color.BLUE);
+        commander.setVelocity(new Point2D(0.5, 0));
+        commander2 = new Commander(Color.GREEN);
+        commander2.setVelocity(new Point2D(0.5, 0));
 
         objectManager.setPane(root);
-        objectManager.addMainCommander(commander);
-        objectManager.addMainCommander(commander2);
+        objectManager.addMainCommander(commander, 200, 300);
+        objectManager.addMainCommander(commander2, 200, 500);
 
         mainTimer = new AnimationTimer() {
             @Override
@@ -92,7 +93,7 @@ public class App extends Application {
                         commander2.getView().getTranslateY());
             } else if (e.getCode() == KeyCode.ALT) {
                 objectManager.addSoldier(new Soldier(), Math.random() * root.getPrefWidth(),
-                        Math.random() * root.getPrefHeight());
+                                                        Math.random() * root.getPrefHeight());
             }
                 });
         stage.show();
