@@ -16,11 +16,12 @@ import managers.ObjectManager;
 
 public class App extends Application {
 
-    private final int width = 1400;
-    private final int height = 740;
+    private final int width = 1920;
+    private final int height = 1080;
 
     private Pane root;
     private Commander commander;
+    private Commander commander2;
 
     private ObjectManager objectManager = new ObjectManager();
     private AnimationTimer mainTimer;
@@ -44,9 +45,12 @@ public class App extends Application {
 
         commander = new Commander();
         commander.setVelocity(new Point2D(1, 0));
+        commander2 = new Commander();
+        commander2.setVelocity(new Point2D(1, 0));
 
         objectManager.setPane(root);
         objectManager.addMainCommander(commander);
+        objectManager.addMainCommander(commander2);
 
         mainTimer = new AnimationTimer() {
             @Override
@@ -68,11 +72,29 @@ public class App extends Application {
             } else if (e.getCode() == KeyCode.SPACE) {
                 Bullet bullet = new Bullet(commander);
                 bullet.setVelocity(commander.getVelocity().normalize().multiply(5));
-                objectManager.addBullet(bullet, commander.getView().getTranslateX(), commander.getView().getTranslateY());
+                objectManager.addBullet(bullet, commander.getView().getTranslateX(),
+                                                commander.getView().getTranslateY());
             } else if (e.getCode() == KeyCode.ALT) {
-                objectManager.addSoldier(new Soldier(), Math.random() * root.getPrefWidth(), Math.random() * root.getPrefHeight());
+                objectManager.addSoldier(new Soldier(), Math.random() * root.getPrefWidth(),
+                                                        Math.random() * root.getPrefHeight());
             }
+
         });
+        stage.getScene().setOnKeyReleased(e -> {
+            if (e.getCode() == KeyCode.A) {
+                commander2.rotateLeft();
+            } else if (e.getCode() == KeyCode.D) {
+                commander2.rotateRight();
+            } else if (e.getCode() == KeyCode.CONTROL) {
+                Bullet bullet = new Bullet(commander2);
+                bullet.setVelocity(commander2.getVelocity().normalize().multiply(5));
+                objectManager.addBullet(bullet, commander2.getView().getTranslateX(),
+                        commander2.getView().getTranslateY());
+            } else if (e.getCode() == KeyCode.ALT) {
+                objectManager.addSoldier(new Soldier(), Math.random() * root.getPrefWidth(),
+                        Math.random() * root.getPrefHeight());
+            }
+                });
         stage.show();
 
     }
