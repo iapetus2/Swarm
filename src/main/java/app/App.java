@@ -23,8 +23,8 @@ import static javafx.scene.input.KeyCode.LEFT;
 
 public class App extends Application {
 
-    private final int width = 1400;
-    private final int height = 720;
+    public final int width = 1920;
+    public final int height = 1080;
 
     private Pane root;
     private Pane startPane;
@@ -42,7 +42,7 @@ public class App extends Application {
         scroll.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         scroll.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         scroll.setPannable(true);
-        scroll.setPrefSize(800, 600);
+        scroll.setPrefSize(width, height);
         scroll.setContent(layout);
         return scroll;
     }
@@ -109,7 +109,6 @@ public class App extends Application {
 
         stage.setScene(new Scene(root));
         stage.setMaximized(true);
-        //stage.setFullScreen(true);
 
         root.getScene().setOnKeyPressed(e -> {
             switch (e.getCode()) {

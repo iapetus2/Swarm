@@ -24,7 +24,7 @@ import java.util.List;
 
 public class MenuApp {
 
-    private static final int WIDTH = 1080;
+    private static final int WIDTH = 600;
     private static final int HEIGHT = 720;
 
     private Pane gamePane;
@@ -80,7 +80,8 @@ public class MenuApp {
     }
 
     private void addBackground() {
-        Image img = new Image("https://www.ringtv.com/wp-content/uploads/2018/02/GettyImages-157456428.jpg");
+        String url = "https://i.pinimg.com/originals/4a/33/25/4a33254a98b67b266c31c2f75fef2c47.jpg";
+        Image img = new Image(url);
         ImageView imageView = new ImageView(img);
         imageView.setFitWidth(WIDTH);
         imageView.setFitHeight(HEIGHT);

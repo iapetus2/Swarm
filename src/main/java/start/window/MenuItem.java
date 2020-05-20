@@ -15,7 +15,7 @@ import javafx.scene.text.Text;
 public class MenuItem extends Pane {
     private Text text;
 
-    private Effect shadow = new DropShadow(5, Color.BLACK);
+    private Effect shadow = new DropShadow(5, Color.CYAN);
     private Effect blur = new BoxBlur(1, 1, 3);
 
     public MenuItem(String name) {
@@ -31,14 +31,14 @@ public class MenuItem extends Pane {
 
         bg.fillProperty().bind(
                 Bindings.when(pressedProperty())
-                        .then(Color.color(0, 0, 0, 0.75))
+                        .then(Color.color(0.5, 0.5, 0, 0.75))
                         .otherwise(Color.color(0, 0, 0, 0.25))
         );
 
         text = new Text(name);
         text.setTranslateX(5);
         text.setTranslateY(20);
-        text.setFont(Font.loadFont("Arial", 14));
+        text.setFont(Font.loadFont("Arial", 48));
         text.setFill(Color.WHITE);
 
         text.effectProperty().bind(

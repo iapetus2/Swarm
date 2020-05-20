@@ -5,10 +5,17 @@ import ClassesOfCharacters.Commander;
 import ClassesOfCharacters.GameObject;
 import ClassesOfCharacters.Soldier;
 import app.App;
+import javafx.beans.binding.Bindings;
 import javafx.scene.Node;
+import javafx.scene.effect.BoxBlur;
+import javafx.scene.effect.DropShadow;
+import javafx.scene.effect.Effect;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,15 +25,48 @@ public class ObjectManager {
 
     private Pane root;
 
-    public static int numberOfEntities = 150;
+    public static int numberOfEntities = 2;
 
     private List<Bullet> bullets = new ArrayList<>();
     private List<Soldier> soldiers = new ArrayList<>();
     private List<Commander> commanders = new ArrayList<>();
 
+    private Text text1;
+    private Text text2;
+    private Text textWin;
+
+    private String initalText1 = "Blue master ";
+    private String initalText2 = "Green master ";
+    private String blueWin = "Blue doooodle win! ";
+    private String greenWin = "Green doooodle win! ";
+
+
+    private Effect shadow = new DropShadow(5, Color.BLACK);
+    private Effect blur = new BoxBlur(1, 1, 3);
+
+
     public void setPane(Pane pane) {
         root = pane;
 
+        textWin = new Text("");
+        textWin.setTranslateX(1980/4);
+        textWin.setTranslateY(1080/2);
+        textWin.setFont(Font.font("Verdana", FontWeight.EXTRA_BOLD, 100));
+        textWin.setFill(Color.BLUE);
+
+        text1 = new Text(initalText1);
+        text1.setTranslateX(5);
+        text1.setTranslateY(50);
+        text1.setFont(Font.font("Verdana", FontWeight.EXTRA_BOLD, 40));
+        text1.setFill(Color.BLUE);
+
+        text2 = new Text(initalText2);
+        text2.setTranslateX(1480);
+        text2.setTranslateY(50);
+        text2.setFont(Font.font("Verdana", FontWeight.EXTRA_BOLD, 40));
+        text2.setFill(Color.GREEN);
+
+        root.getChildren().addAll(text1, text2, textWin);
     }
 
     public void addCommander(Commander commander, double x, double y) {
@@ -60,6 +100,21 @@ public class ObjectManager {
             commanders.forEach(commander -> {
                 commander.getView().toFront();
             });
+            text1.toFront();
+            text2.toFront();
+
+
+            if(currentNumberOfSoldiers <= 0 ) {
+                if(commanders.get(0).getNumberOfSoldiers() > commanders.get(1).getNumberOfSoldiers()) {
+                    textWin.setText(blueWin);
+                } else {
+                    textWin.setText(greenWin);
+                }
+                textWin.toFront();
+                App.pause = true;
+            }
+
+
             bullets.forEach(bullet -> {
                 soldiers.forEach(soldier -> {
                     if (soldier.getCaptain() != bullet.getStriker()) {
@@ -81,6 +136,9 @@ public class ObjectManager {
                     }
                 });
             });
+
+            text1.setText(initalText1 + commanders.get(0).getNumberOfSoldiers());
+            text2.setText(initalText2 + commanders.get(1).getNumberOfSoldiers());
 
             commanders.forEach(commander -> {
                 Node viewCommander = commander.getView();
@@ -125,7 +183,7 @@ public class ObjectManager {
             }
 
 
-            if (numberOfEntities >= 0 && ThreadLocalRandom.current().nextDouble() < 0.015) {
+            if (numberOfEntities > 0 && ThreadLocalRandom.current().nextDouble() < 0.015) {
                 addSoldier(new Soldier(), ThreadLocalRandom.current().nextDouble() * root.getPrefWidth(), ThreadLocalRandom.current().nextDouble() * root.getPrefHeight());
                 numberOfEntities--;
             }
