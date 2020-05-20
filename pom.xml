@@ -20,11 +20,6 @@
             <artifactId>javafx-fxml</artifactId>
             <version>13</version>
         </dependency>
-        <dependency>
-            <groupId>edu.phystech.frtk</groupId>
-            <artifactId>SwarmStrategy</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
     </dependencies>
     <build>
         <plugins>
@@ -41,7 +36,7 @@
                 <artifactId>javafx-maven-plugin</artifactId>
                 <version>0.0.4</version>
                 <configuration>
-                    <mainClass>edu.phystech.frtk.App</mainClass>
+                    <mainClass>edu.phystech.frtk.app</mainClass>
                 </configuration>
             </plugin>
         </plugins>

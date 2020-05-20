@@ -1,58 +1,113 @@
 package managers;
 
+import ClassesOfCharacters.Bullet;
+import ClassesOfCharacters.Commander;
 import ClassesOfCharacters.GameObject;
+import ClassesOfCharacters.Soldier;
+import javafx.scene.Node;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class ObjectManager {
-        private List<GameObject> bullets = new ArrayList<>();
-        private List<GameObject> soldiers = new ArrayList<>();
-        private List<GameObject> commanders = new ArrayList<>();
 
-        private Pane root;
+    private Pane root;
+    private Commander mainCommander;
 
-        private GameObject player;
+    private List<GameObject> bullets = new ArrayList<>();
+    private List<GameObject> soldiers = new ArrayList<>();
+    private List<GameObject> commanders = new ArrayList<>();
 
-        private void addBullet (GameObject bullet,double x, double y){
+    public void setPane(Pane pane) {
+        root = pane;
+    }
+
+    public void addMainCommander(Commander commander) {
+        mainCommander = commander;
+        addCommander(mainCommander, 300, 300);
+    }
+
+    private void addCommander(Commander commander, double x, double y) {
+        commanders.add(commander);
+        addGameObject(commander, x, y);
+    }
+
+    public void addBullet(GameObject bullet, double x, double y) {
         bullets.add(bullet);
         addGameObject(bullet, x, y);
     }
 
-        private void addSoldier (GameObject soldier,double x, double y){
+    public void addSoldier(GameObject soldier, double x, double y) {
         soldiers.add(soldier);
         addGameObject(soldier, x, y);
     }
 
-        private void addGameObject (GameObject object,double x, double y){
+    public void addGameObject(GameObject object, double x, double y) {
         object.getView().setTranslateX(x);
         object.getView().setTranslateY(y);
         root.getChildren().add(object.getView());
     }
 
-        private void onUpdate () {
-        for (GameObject bullet : bullets) {
-            for (GameObject soldier : soldiers) {
+    public void onUpdate() {
+        bullets.forEach(bullet -> {
+            soldiers.stream().parallel().forEach(soldier -> {
                 if (bullet.isColliding(soldier)) {
                     bullet.setAlive(false);
                     soldier.setAlive(false);
 
                     root.getChildren().removeAll(bullet.getView(), soldier.getView());
                 }
+            });
+        });
+
+        commanders.forEach(commander -> {
+            Node viewCommander = commander.getView();
+
+            if (viewCommander.getTranslateX() < 0) {
+                viewCommander.setTranslateX(root.getWidth());
+            } else if (viewCommander.getTranslateX() > root.getWidth()) {
+                viewCommander.setTranslateX(0);
             }
-        }
 
-        bullets.removeIf(GameObject::isDead);
-        soldiers.removeIf(GameObject::isDead);
+            if (viewCommander.getTranslateY() < 0) {
+                viewCommander.setTranslateY(root.getHeight());
+            } else if (viewCommander.getTranslateY() > root.getHeight()) {
+                viewCommander.setTranslateY(0);
+            }
+        });
 
-        bullets.forEach(GameObject::update);
-        soldiers.forEach(GameObject::update);
-
-        player.update();
 
         if (Math.random() < 0.02) {
-            addSoldier(new ClassesOfCharacters.Soldier(), Math.random() * root.getPrefWidth(), Math.random() * root.getPrefHeight());
+            addSoldier(new Soldier(), Math.random() * root.getPrefWidth(), Math.random() * root.getPrefHeight());
         }
+
+        soldiers.removeIf(GameObject::isDead);
+        bullets.removeIf(GameObject::isDead);
+
+        bullets.stream().parallel().forEach(GameObject::update);
+        soldiers.stream().parallel().forEach(GameObject::update);
+        commanders.stream().parallel().forEach(GameObject::update);
+
     }
+
+    private void addKeyListener() {
+        root.setOnKeyPressed(e -> {
+            if (e.getCode() == KeyCode.LEFT) {
+                mainCommander.rotateLeft();
+            } else if (e.getCode() == KeyCode.RIGHT) {
+                mainCommander.rotateRight();
+            } else if (e.getCode() == KeyCode.SPACE) {
+                Bullet bullet = new Bullet(mainCommander);
+                bullet.setVelocity(mainCommander.getVelocity().normalize().multiply(5));
+                addBullet(bullet, mainCommander.getView().getTranslateX(), mainCommander.getView().getTranslateY());
+            } else if (e.getCode() == KeyCode.ALT) {
+                addSoldier(new Soldier(), Math.random() * root.getPrefWidth(), Math.random() * root.getPrefHeight());
+            }
+        });
+    }
+
+
 
 }
