@@ -1,5 +1,6 @@
 package start.window;
 
+import app.App;
 import javafx.animation.*;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -9,8 +10,7 @@ import javafx.scene.Scene;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
@@ -19,29 +19,52 @@ import javafx.util.Duration;
 import javafx.util.Pair;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
-public class MenuApp extends Application {
+public class MenuApp {
 
-    private static final int WIDTH = 1280;
+    private static final int WIDTH = 600;
     private static final int HEIGHT = 720;
 
+    private Pane gamePane;
+    private Stage stage;
+    private App app;
+
     private List<Pair<String, Runnable>> menuData = Arrays.asList(
-            new Pair<String, Runnable>("Single Player", () -> {}),
-            new Pair<String, Runnable>("Multiplayer", () -> {}),
-            new Pair<String, Runnable>("Game Options", () -> {}),
-            new Pair<String, Runnable>("Additional Content", () -> {}),
-            new Pair<String, Runnable>("Tutorial", () -> {}),
-            new Pair<String, Runnable>("Benchmark", () -> {}),
-            new Pair<String, Runnable>("Credits", () -> {}),
+            new Pair<String, Runnable>("Start Game!", () -> {
+                app.startGame();
+            }),
+            new Pair<String, Runnable>("Options", () -> {}),
+            new Pair<String, Runnable>("Credits", () -> {
+
+            }),
             new Pair<String, Runnable>("Exit to Desktop", Platform::exit)
     );
+
+    public MenuApp(Pane pane) {
+        gamePane = pane;
+    }
+
+    public MenuApp(Stage stage) {
+        this.stage = stage;
+    }
+
+    public MenuApp(App app) {
+        this.app = app;
+    }
+
+    public MenuApp(Stage stage, Pane pane) {
+        this.stage = stage;
+        gamePane = pane;
+    }
+
 
     private Pane root = new Pane();
     private VBox menuBox = new VBox(-5);
     private Line line;
 
-    private Parent createContent() {
+    public Pane createContent() {
         addBackground();
         addTitle();
 
@@ -57,7 +80,8 @@ public class MenuApp extends Application {
     }
 
     private void addBackground() {
-        ImageView imageView = new ImageView(new Image(getClass().getResource("file:resources/space.jpg").toExternalForm()));
+        Image img = new Image("http://www.narniaweb.com/wp-content/uploads/2009/08/NarniaMap.jpg");
+        ImageView imageView = new ImageView(img);
         imageView.setFitWidth(WIDTH);
         imageView.setFitHeight(HEIGHT);
 
@@ -65,7 +89,7 @@ public class MenuApp extends Application {
     }
 
     private void addTitle() {
-        MenuItemTitle title = new MenuItemTitle("CIVILIZATION VI");
+        MenuItemTitle title = new MenuItemTitle("Swarm");
         title.setTranslateX(WIDTH / 2 - title.getTitleWidth() / 2);
         title.setTranslateY(HEIGHT / 3);
 
@@ -73,7 +97,7 @@ public class MenuApp extends Application {
     }
 
     private void addLine(double x, double y) {
-        line = new Line(x, y, x, y + 300);
+        line = new Line(x, y, x, y + 170);
         line.setStrokeWidth(3);
         line.setStroke(Color.color(1, 1, 1, 0.75));
         line.setEffect(new DropShadow(5, Color.BLACK));
@@ -118,15 +142,4 @@ public class MenuApp extends Application {
         root.getChildren().add(menuBox);
     }
 
-    @Override
-    public void start(Stage primaryStage) throws Exception {
-        Scene scene = new Scene(createContent());
-        primaryStage.setTitle("Civilization VI Menu");
-        primaryStage.setScene(scene);
-        primaryStage.show();
-    }
-
-    public static void main(String[] args) {
-        launch(args);
-    }
 }

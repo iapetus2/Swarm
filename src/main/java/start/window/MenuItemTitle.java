@@ -15,7 +15,7 @@ public class MenuItemTitle extends Pane {
         }
 
         text = new Text(spread);
-        text.setFont(Font.loadFont(MenuApp.class.getResource("res/Penumbra-HalfSerif-Std_35114.ttf").toExternalForm(), 48));
+        text.setFont(Font.loadFont("Arial", 48));
         text.setFill(Color.WHITE);
         text.setEffect(new DropShadow(30, Color.BLACK));
 

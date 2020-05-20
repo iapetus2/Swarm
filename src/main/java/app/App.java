@@ -6,6 +6,7 @@ import ClassesOfCharacters.Soldier;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.geometry.Point2D;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
@@ -14,6 +15,7 @@ import javafx.stage.Stage;
 import javafx.scene.control.ScrollPane;
 
 import managers.ObjectManager;
+import start.window.MenuApp;
 
 import static javafx.scene.input.KeyCode.LEFT;
 
@@ -23,11 +25,15 @@ public class App extends Application {
     private final int height = 720;
 
     private Pane root;
+    private Pane startPane;
     private Commander commander;
     private Commander commander2;
 
     private ObjectManager objectManager = new ObjectManager();
     private AnimationTimer mainTimer;
+    private MenuApp menuApp;
+    private Stage stage;
+    private boolean gameStatus;
 
     private ScrollPane createScrollPane(Pane layout) {
         ScrollPane scroll = new ScrollPane();
@@ -63,7 +69,6 @@ public class App extends Application {
                 objectManager.onUpdate();
             }
         };
-        mainTimer.start();
     }
 
     public static boolean clickLeft = false;
@@ -73,10 +78,25 @@ public class App extends Application {
     public static boolean clickLeft2 = false;
     public static boolean clickRight2 = false;
     public static boolean shoot2 = false;
+    public static boolean pause = false;
 
 
     @Override
     public void start(Stage stage) throws Exception {
+        this.stage = stage;
+
+        menuApp = new MenuApp(this);
+        startPane = menuApp.createContent();
+        stage.setScene(new Scene(startPane));
+
+        stage.show();
+
+    }
+
+    public void startGame() {
+        mainTimer.start();
+        gameStatus = true;
+
         stage.setScene(new Scene(root));
         stage.setMaximized(true);
         //stage.setFullScreen(true);
@@ -86,6 +106,7 @@ public class App extends Application {
                 case LEFT: clickLeft = true; break;
                 case RIGHT: clickRight = true; break;
                 case CONTROL: shoot = true; break;
+                case P: pause = !pause; break;
 
                 case A: clickLeft2 = true; break;
                 case D: clickRight2 = true; break;
