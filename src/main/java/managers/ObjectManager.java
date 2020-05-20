@@ -18,7 +18,7 @@ public class ObjectManager {
 
     private Pane root;
 
-    public static int numberOfEntities = 100;
+    public static int numberOfEntities = 150;
 
     private List<Bullet> bullets = new ArrayList<>();
     private List<Soldier> soldiers = new ArrayList<>();
@@ -51,6 +51,7 @@ public class ObjectManager {
     }
 
     private long counter = 0;
+    private int currentNumberOfSoldiers = numberOfEntities;
 
     public void onUpdate() {
         if (!App.pause) {
@@ -66,6 +67,8 @@ public class ObjectManager {
                                 soldier.setAlive(true);
                                 if (soldier.getCaptain() != null) {
                                     soldier.getCaptain().removeNumberOfSoldiers();
+                                } else {
+                                    currentNumberOfSoldiers -= 1;
                                 }
                                 soldier.setCaptain(bullet.getStriker());
                                 soldier.setFill(bullet.getStrikerPaint());
@@ -93,7 +96,7 @@ public class ObjectManager {
             });
 
 
-            if (App.shoot && counter > 100) {
+            if (App.shoot && counter > 20) {
                 Bullet bullet = new Bullet(commanders.get(0));
                 bullet.setVelocity(commanders.get(0).getVelocity().normalize().multiply(5));
                 addBullet(bullet, commanders.get(0).getView().getTranslateX(), commanders.get(0).getView().getTranslateY());
@@ -106,7 +109,7 @@ public class ObjectManager {
             }
 
 
-            if (App.shoot2 && counter > 100) {
+            if (App.shoot2 && counter > 20) {
                 Bullet bullet = new Bullet(commanders.get(1));
                 bullet.setVelocity(commanders.get(1).getVelocity().normalize().multiply(5));
                 addBullet(bullet, commanders.get(1).getView().getTranslateX(), commanders.get(1).getView().getTranslateY());
@@ -119,7 +122,7 @@ public class ObjectManager {
             }
 
 
-            if (numberOfEntities >= 0 && ThreadLocalRandom.current().nextDouble() < 0.01) {
+            if (numberOfEntities >= 0 && ThreadLocalRandom.current().nextDouble() < 0.015) {
                 addSoldier(new Soldier(), ThreadLocalRandom.current().nextDouble() * root.getPrefWidth(), ThreadLocalRandom.current().nextDouble() * root.getPrefHeight());
                 numberOfEntities--;
             }
@@ -131,7 +134,7 @@ public class ObjectManager {
             soldiers.forEach(GameObject::update);
             commanders.forEach(GameObject::update);
 
-            if(counter > 100) {
+            if(counter > 20) {
                 counter = 0;
             }
         }
