@@ -13,8 +13,10 @@ public class Commander extends GameObject {
         this.height = newHeight;
     }
 
-    public void update (final double width, final double height) {
-        this.update();
+    @Override
+    public void update () {
+        super.update();
+
         if (getView().getTranslateX() < 0) {
             getView().setTranslateX(width);
         } else if (getView().getTranslateX() > width) {

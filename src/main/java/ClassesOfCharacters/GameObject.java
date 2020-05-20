@@ -55,12 +55,14 @@ public class GameObject {
 
     public void rotateRight() {
         view.setRotate(view.getRotate() + 5);
-        setVelocity(new Point2D(Math.cos(Math.toRadians(getRotate())), Math.sin(Math.toRadians(getRotate()))));
+        setVelocity(new Point2D(this.getVelocity().magnitude()*Math.cos(Math.toRadians(getRotate())),
+                this.getVelocity().magnitude()*Math.sin(Math.toRadians(getRotate()))));
     }
 
     public void rotateLeft() {
         view.setRotate(view.getRotate() - 5);
-        setVelocity(new Point2D(Math.cos(Math.toRadians(getRotate())), Math.sin(Math.toRadians(getRotate()))));
+        setVelocity(new Point2D(this.getVelocity().magnitude()*Math.cos(Math.toRadians(getRotate())),
+                this.getVelocity().magnitude()*Math.sin(Math.toRadians(getRotate()))));
     }
 
     public boolean isColliding(GameObject other) {

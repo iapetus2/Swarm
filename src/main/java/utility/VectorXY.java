@@ -26,14 +26,12 @@ public class VectorXY {
         return y;
     }
 
-    public VectorXY setX (final double x) {
+    public void setX (final double x) {
         this.x = x;
-        return this;
     }
 
-    public VectorXY setY (final double y) {
+    public void setY (final double y) {
         this.y = y;
-        return this;
     }
 
     public void setVector (final double x, final double y) {
@@ -46,14 +44,11 @@ public class VectorXY {
     }
 
     public VectorXY addVector (final double x, final double y) {
-        this.x += x;
-        this.y += y;
-        return this;
+        return new VectorXY(this.x + x, this.y + y);
     }
 
     public VectorXY addVector (final VectorXY vector) {
-        this.addVector(vector.x, vector.y);
-        return this;
+        return this.addVector(vector.x, vector.y);
     }
 
     public VectorXY sumVector ( final VectorXY vector1, final VectorXY vector2) {
@@ -61,13 +56,11 @@ public class VectorXY {
     }
 
     public VectorXY subVector (final double x, final double y) {
-        this.addVector(-x, -y);
-        return this;
+        return this.addVector(-x, -y);
     }
 
     public VectorXY subVector (final VectorXY vector) {
-        this.subVector(vector.x, vector.y);
-        return this;
+        return this.subVector(vector.x, vector.y);
     }
 
     public VectorXY diffVector (final VectorXY vector1, final VectorXY vector2) {
@@ -75,9 +68,7 @@ public class VectorXY {
     }
 
     public VectorXY mulVector (final double n) {
-        this.x *= n;
-        this.y *= n;
-        return this;
+        return new VectorXY(this.x * n, this.y * n);
     }
 
     public VectorXY mulVector (final VectorXY vector, final double n) {
@@ -86,19 +77,16 @@ public class VectorXY {
 
     public VectorXY divVector (double n) {
         if (n != 0) {
-            this.x /= n;
-            this.y /= n;
+            return new VectorXY(this.x/n, this.y/n);
         } else {
             System.out.println("Error! Division by zero!");
             //Либо научиться выбрасывать исключения!
         }
-        return this;
+        return null;
     }
 
     public VectorXY divVector (final VectorXY vector, final double n) {
-        VectorXY new_vector = new VectorXY(vector);
-        new_vector.divVector(n);
-        return new_vector;
+        return this.divVector(n);
     }
 
     public double lengthVector () {
@@ -108,7 +96,9 @@ public class VectorXY {
     public VectorXY normalize () {
         double l = this.lengthVector();
         if (l != 0 && l != 1) {
-            return (divVector(this, l));
+            return this.divVector(l);
+        } else if (l == 1){
+            return new VectorXY(this.x, this.y);
         }
         return null;
     }

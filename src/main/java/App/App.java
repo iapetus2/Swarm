@@ -11,10 +11,16 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+import javafx.scene.control.ScrollPane;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
+
+import javafx.scene.control.ScrollPane;
+
 
 public class App extends Application {
 
@@ -42,6 +48,16 @@ public class App extends Application {
         timer.start();
 
         return root;
+    }
+
+    private ScrollPane createScrollPane(Pane layout) {
+        ScrollPane scroll = new ScrollPane();
+        scroll.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        scroll.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        scroll.setPannable(true);
+        scroll.setPrefSize(800, 600);
+        scroll.setContent(layout);
+        return scroll;
     }
 
     private void addBullet(Bullet bullet, double x, double y) {
@@ -82,7 +98,7 @@ public class App extends Application {
         bullets.forEach(GameObject::update);
         soldiers.forEach(GameObject::update);
 
-        commander.update(root.getWidth(), root.getHeight());
+        commander.update();
 
 
     }
