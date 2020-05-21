@@ -24,10 +24,13 @@ import java.util.concurrent.ThreadLocalRandom;
 public class ObjectManager {
 
     private Pane root;
+
     private double width = 0;
     private double heught = 0;
-
-    public static int numberOfEntities = 3;
+    private long counter = 0;
+    public static int numberOfEntities = 15
+            ;
+    private int currentNumberOfSoldiers = numberOfEntities;
 
     private List<Bullet> bullets = new ArrayList<>();
     private List<Soldier> soldiers = new ArrayList<>();
@@ -98,62 +101,62 @@ public class ObjectManager {
         root.getChildren().add(object.getView());
     }
 
-    private long counter = 0;
-    private int currentNumberOfSoldiers = numberOfEntities;
+    private void endOfGame () {
+        if(commanders.get(0).getNumberOfSoldiers() > commanders.get(1).getNumberOfSoldiers() && !end) {
+            textWin.setText(blueWin);
+            textWin.setFill(Color.BLUE);
+            end = true;
+        } else if (!end){
+            textWin.setText(greenWin);
+            textWin.setFill(Color.GREEN);
+            end = true;
+        }
+        textWin.toFront();
+        counter = 40;
+        commanders.get(0).rotateLeft();
+        commanders.get(1).rotateLeft();
+
+        Bullet bullet1 = new Bullet(commanders.get(0));
+        bullet1.setVelocity(commanders.get(0).getVelocity().normalize().multiply(-5));
+        addBullet(bullet1, commanders.get(0).getView().getTranslateX(), commanders.get(0).getView().getTranslateY());
+
+        Bullet bullet2 = new Bullet(commanders.get(1));
+        bullet2.setVelocity(commanders.get(1).getVelocity().normalize().multiply(-5));
+        addBullet(bullet2, commanders.get(1).getView().getTranslateX(), commanders.get(1).getView().getTranslateY());
+
+        bullets.forEach(bullet -> {
+            Node viewBullet = bullet.getView();
+
+            if (viewBullet.getTranslateX() < 0) {
+                viewBullet.setTranslateX(root.getWidth());
+            } else if (viewBullet.getTranslateX() > root.getWidth()) {
+                viewBullet.setTranslateX(0);
+            }
+
+            if (viewBullet.getTranslateY() < 0) {
+                viewBullet.setTranslateY(root.getHeight());
+            } else if (viewBullet.getTranslateY() > root.getHeight()) {
+                viewBullet.setTranslateY(0);
+            }
+        });
+
+        App.shoot = App.shoot2 = true;
+    }
+
 
     public void onUpdate() {
 
         if (!App.pause) {
             counter++;
-            commanders.forEach(commander -> {
+            commanders.stream().parallel().forEach(commander -> {
                 commander.getView().toFront();
             });
             text1.toFront();
             text2.toFront();
 
-
             if(currentNumberOfSoldiers <= 0 ) {
-                if(commanders.get(0).getNumberOfSoldiers() > commanders.get(1).getNumberOfSoldiers() && !end) {
-                    textWin.setText(blueWin);
-                    textWin.setFill(Color.BLUE);
-                    end = true;
-                } else if (!end){
-                    textWin.setText(greenWin);
-                    textWin.setFill(Color.GREEN);
-                    end = true;
-                }
-                textWin.toFront();
-                counter = 40;
-                commanders.get(0).rotateLeft();
-                commanders.get(1).rotateLeft();
-
-                Bullet bullet1 = new Bullet(commanders.get(0));
-                bullet1.setVelocity(commanders.get(0).getVelocity().normalize().multiply(-5));
-                addBullet(bullet1, commanders.get(0).getView().getTranslateX(), commanders.get(0).getView().getTranslateY());
-
-                Bullet bullet2 = new Bullet(commanders.get(1));
-                bullet2.setVelocity(commanders.get(1).getVelocity().normalize().multiply(-5));
-                addBullet(bullet2, commanders.get(1).getView().getTranslateX(), commanders.get(1).getView().getTranslateY());
-
-                bullets.forEach(bullet -> {
-                    Node viewBullet = bullet.getView();
-
-                    if (viewBullet.getTranslateX() < 0) {
-                        viewBullet.setTranslateX(root.getWidth());
-                    } else if (viewBullet.getTranslateX() > root.getWidth()) {
-                        viewBullet.setTranslateX(0);
-                    }
-
-                    if (viewBullet.getTranslateY() < 0) {
-                        viewBullet.setTranslateY(root.getHeight());
-                    } else if (viewBullet.getTranslateY() > root.getHeight()) {
-                        viewBullet.setTranslateY(0);
-                    }
-                });
-
-                App.shoot = App.shoot2 = true;
+                endOfGame();
             }
-
 
             bullets.forEach(bullet -> {
                 soldiers.forEach(soldier -> {
@@ -172,6 +175,7 @@ public class ObjectManager {
                                 soldier.setFill(bullet.getStrikerPaint());
                             }
                             root.getChildren().removeAll(bullet.getView());
+                            root.getChildren().removeAll(bullet.getView());
                         }
                     }
                 });
@@ -182,7 +186,7 @@ public class ObjectManager {
                 text2.setText(initalText2 + commanders.get(1).getNumberOfSoldiers());
             }
 
-            commanders.forEach(commander -> {
+            commanders.stream().parallel().forEach(commander -> {
                 Node viewCommander = commander.getView();
 
                 if (viewCommander.getTranslateX() < 0) {
